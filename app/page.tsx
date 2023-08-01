@@ -109,7 +109,7 @@ export default function Dashboard() {
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="EasyBudget" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -179,12 +179,10 @@ const secondaryListItems = (
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              easyBudget
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+              тут буде тема і мова
             </IconButton>
           </Toolbar>
         </AppBar>
