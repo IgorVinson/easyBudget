@@ -17,7 +17,6 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -104,7 +103,8 @@ export default function Dashboard() {
     setOpen(!open);
   };
 
-  const mainListItems = (<React.Fragment>
+  const mainListItems = (
+  <React.Fragment>
     <ListItemButton>
       <ListItemIcon>
         <DashboardIcon />
@@ -123,7 +123,8 @@ export default function Dashboard() {
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton>
-  </React.Fragment>); // Ваш масив або колекція з елементами JSX для головного списку
+  </React.Fragment>
+  ); // Ваш масив або колекція з елементами JSX для головного списку
 const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
