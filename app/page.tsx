@@ -47,6 +47,7 @@ const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
+
 }
 
 const AppBar = styled(MuiAppBar, {
