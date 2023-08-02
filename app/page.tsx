@@ -175,7 +175,7 @@ const secondaryListItems = (
             <Typography
               component="h1"
               variant="h6"
-              color="inherit"
+              color="secondary"
               noWrap
               sx={{ flexGrow: 1 }}
             >
