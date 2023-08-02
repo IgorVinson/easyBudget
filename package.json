@@ -12,6 +12,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.5",
+    "@mui/x-charts": "^6.0.0-alpha.5",
+
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
     "@types/node": "20.4.5",
@@ -22,6 +24,7 @@
     "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recharts": "^2.7.2",
     "typescript": "5.1.6"
   }
 }
