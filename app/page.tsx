@@ -24,10 +24,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-
 import Chart from './main_screen/Chart';
 import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
+import theme from './utils/MUItheme';
 
 
 function Copyright(props: any) {
@@ -94,8 +94,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
@@ -152,7 +151,7 @@ const secondaryListItems = (
 );; // Ваш масив або колекція з елементами JSX для вторинного списку
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
@@ -182,7 +181,7 @@ const secondaryListItems = (
             >
               easyBudget
             </Typography>
-            <IconButton color="inherit">
+            <IconButton color="secondary">
               тут буде тема і мова
             </IconButton>
           </Toolbar>
