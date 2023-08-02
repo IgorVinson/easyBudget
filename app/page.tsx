@@ -1,11 +1,17 @@
-import styles from './page.module.css'
-import {Button} from "@mui/material";
+import Button from "@mui/material/Button";
+import {Container} from "@mui/material";
 
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <h1>Hello guys!</h1>
-      <Button variant="contained">Click me</Button>
-    </main>
-  )
+    return (
+        <>
+            <main>
+                <h1>Hello guys!</h1>
+                <Container>
+                    <Button variant="contained">Click me</Button>
+                    <Button variant="contained" color={"secondary"}>Click me</Button>
+                </Container>
+            </main>
+        </>
+
+    )
 }
