@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -24,6 +24,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import Button from '@mui/material/Button';
 import Chart from './main_screen/Chart';
 import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
@@ -181,9 +182,8 @@ const secondaryListItems = (
             >
               easyBudget
             </Typography>
-            <IconButton color="secondary">
-              тут буде тема і мова
-            </IconButton>
+            <Button variant="contained">Sign In</Button>
+            <Button variant="contained">Sign Up</Button>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
