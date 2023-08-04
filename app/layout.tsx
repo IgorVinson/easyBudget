@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect  } from 'react';
 import './globals.css'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
