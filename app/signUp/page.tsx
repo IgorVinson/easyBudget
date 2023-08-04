@@ -1,4 +1,5 @@
 'use client'
+import { ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { theme, darktheme} from '../utils/MUItheme'
+
 
 function Copyright(props: any) {
     return (
@@ -36,6 +39,7 @@ export default function SignUp() {
     };
 
     return (
+        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -122,5 +126,6 @@ export default function SignUp() {
                 </Box>
                 <Copyright sx={{ mt: 2 }} />
             </Container>
+            </ThemeProvider>
     );
 }

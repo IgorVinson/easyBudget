@@ -11,7 +11,7 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: '/app/utils/translate/{{lng}}.json',
+      loadPath: 'http://localhost:3000/app/utils/translate/{{lng}}.json',
     },
     interpolation: {
       escapeValue: false,
