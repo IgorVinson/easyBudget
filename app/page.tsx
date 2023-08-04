@@ -31,7 +31,6 @@ import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
 import { theme, darkTheme } from './utils/MUItheme';
 import LanguageSwitcher from './utils/translate/switcherTranslation'
-import { withTranslation } from 'react-i18next';
 
 
 

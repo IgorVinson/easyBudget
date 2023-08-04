@@ -1,22 +1,27 @@
-'use client';
+'use strict';
 import i18n from 'i18next';
-import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-const backendOptions = {
-  loadPath: (lng) => `./utils/translate/${lng}.json`,
+import enTranslation from '../public/utils/translate/en.json';
+import ukTranslation from '../public/utils/translate/uk.json';
+
+const resources = {
+  en: { translation: enTranslation },
+  uk: { translation: ukTranslation },
 };
 
-i18n
-  .use(Backend)
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    backend: backendOptions,
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+if (!i18n.isInitialized) { // Перевірка, чи ще не було ініціалізовано i18n
+  i18n
+    .use(LanguageDetector) // Enable language detector
+    .use(initReactI18next)
+    .init({
+      resources,
+      fallbackLng: 'en', // Default language if no language is detected
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+}
 
 export default i18n;
