@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -28,7 +28,8 @@ import Button from '@mui/material/Button';
 import Chart from './main_screen/Chart';
 import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
-import theme from './utils/MUItheme';
+import { theme, darkTheme } from './utils/MUItheme';
+
 
 
 function Copyright(props: any) {
@@ -99,9 +100,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const toggleTheme = () => {
+    setDarkMode((prevMode) => !prevMode);
+  }
 
   const mainListItems = (
   <React.Fragment>
@@ -152,7 +158,7 @@ const secondaryListItems = (
 );; // Ваш масив або колекція з елементами JSX для вторинного списку
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkMode ? darkTheme : theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
@@ -184,6 +190,9 @@ const secondaryListItems = (
             </Typography>
             <Button variant="contained">Sign In</Button>
             <Button variant="contained">Sign Up</Button>
+            <Button onClick={toggleTheme} variant="contained">
+        Toggle Theme
+      </Button>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
