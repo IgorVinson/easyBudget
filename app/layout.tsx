@@ -7,7 +7,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {ThemeProvider} from "@mui/system";
 import theme from "@/app/utils/MUItheme";
-import i18n from './utils/translate/i18n';
+import i18n from './i18n';
 
 
 export default function RootLayout({

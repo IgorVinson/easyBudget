@@ -31,8 +31,7 @@ import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
 import { theme, darkTheme } from './utils/MUItheme';
 import LanguageSwitcher from './utils/translate/switcherTranslation'
-
-
+import { withTranslation } from 'react-i18next';
 
 
 
@@ -191,12 +190,12 @@ const secondaryListItems = (
               noWrap
               sx={{ flexGrow: 1 }}
             >
-               {t('title')}
+               {t('translation.title')}
             </Typography>
-            <Button variant="contained">{t('signIn')}</Button>
-            <Button variant="contained">{t('signUp')}</Button>
+            <Button variant="contained">{t('translation.signIn')}</Button>
+            <Button variant="contained">{t('translation.signUp')}</Button>
             <Button onClick={toggleTheme} variant="contained">
-            {t('toggleTheme')}
+            {t('translation.toggleTheme')}
       </Button>
       <LanguageSwitcher />
           </Toolbar>
