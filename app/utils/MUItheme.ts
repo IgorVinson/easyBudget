@@ -19,4 +19,24 @@ export const theme = createTheme({
     },
 });
 
-export default theme;
+
+export const darkTheme = createTheme({
+    palette: {
+        primary: {
+            main: "#303030", // Ваш колір для primary у темній темі
+        },
+        secondary: {
+            main: "#ffffff", // Ваш колір для secondary у темній темі
+        },
+        mode: "dark",
+    },
+    components: {
+        MuiLink: {
+            defaultProps: {
+                color: "#ffffff", // Ваш колір по замовчуванню для посилань у темній темі
+            },
+        },
+    },
+});
+
+export default { theme, darkTheme };
