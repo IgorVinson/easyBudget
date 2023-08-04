@@ -18,7 +18,7 @@ export default function RootLayout({
     // Ініціалізуємо i18next один раз на всій сторінці
     useEffect(() => {
         i18n.init({
-            lng: 'en', // Встановіть вашу мову за замовчуванням тут
+            lng: 'en', 
             fallbackLng: 'en',
             debug: true,
             backend: {
