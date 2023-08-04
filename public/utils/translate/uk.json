@@ -10,6 +10,11 @@
     "savedReports": "Збережені звіти",
     "currentMonth": "Поточний місяць",
     "lastQuarter": "Минулий квартал",
-    "yearEndSale": "Річний розпродаж"
+    "yearEndSale": "Річний розпродаж",
+    "today": "Сьогодні",
+    "recentDeposits": "Депозит",
+    "onDate": "15 Марта 2022",
+    "viewBalance": "View balance",
+    "categoriesScreen": "Екран категорій"
   }
 }

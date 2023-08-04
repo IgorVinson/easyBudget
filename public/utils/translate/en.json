@@ -10,6 +10,11 @@
     "savedReports": "Saved Reports",
     "currentMonth": "Current Month",
     "lastQuarter": "Last Quarter",
-    "yearEndSale": "Year-End Sale"
+    "yearEndSale": "Year-End Sale",
+    "today": "Today",
+    "recentDeposits": "Recent Deposits",
+    "onDate": "15 March 2022",
+    "viewBalance": "Загальний баланс",
+    "categoriesScreen": "categories Screen"
   }
 }
