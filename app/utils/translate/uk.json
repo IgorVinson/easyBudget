@@ -1,0 +1,15 @@
+{
+  "translation": {
+    "title": "easyBudget",
+    "signIn": "Увійти",
+    "signUp": "Зареєструватися",
+    "toggleTheme": "Змінити тему",
+    "dashboard": "Панель управління",
+    "orders": "Замовлення",
+    "integrations": "Інтеграції",
+    "savedReports": "Збережені звіти",
+    "currentMonth": "Поточний місяць",
+    "lastQuarter": "Минулий квартал",
+    "yearEndSale": "Річний розпродаж"
+  }
+}

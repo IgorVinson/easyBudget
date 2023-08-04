@@ -1,0 +1,15 @@
+{
+  "translation": {
+    "title": "easyBudget",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "toggleTheme": "Toggle Theme",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "integrations": "Integrations",
+    "savedReports": "Saved Reports",
+    "currentMonth": "Current Month",
+    "lastQuarter": "Last Quarter",
+    "yearEndSale": "Year-End Sale"
+  }
+}
