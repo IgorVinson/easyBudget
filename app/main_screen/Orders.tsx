@@ -1,27 +1,17 @@
 import * as React from 'react';
 import Title from './Title';
-
-// Generate Order Data
-function createData(
-  id: number,
-  date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number,
-) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
+import { useTranslation } from 'react-i18next';
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
 export default function Orders() {
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
-      <Title>Екран категорій</Title>
+      <Title>{t('translation.categoriesScreen')}</Title>
     </React.Fragment>
   );
 }

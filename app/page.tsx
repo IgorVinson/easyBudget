@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, {useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -29,6 +30,7 @@ import Chart from './main_screen/Chart';
 import Deposits from './main_screen/Deposits';
 import Orders from './main_screen/Orders';
 import { theme, darkTheme } from './utils/MUItheme';
+import LanguageSwitcher from './utils/translate/switcherTranslation'
 
 
 
@@ -104,6 +106,7 @@ export default function Dashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const { t } = useTranslation();
 
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
@@ -186,13 +189,14 @@ const secondaryListItems = (
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              easyBudget
+               {t('translation.title')}
             </Typography>
-            <Button variant="contained">Sign In</Button>
-            <Button variant="contained">Sign Up</Button>
+            <Button variant="contained">{t('translation.signIn')}</Button>
+            <Button variant="contained">{t('translation.signUp')}</Button>
             <Button onClick={toggleTheme} variant="contained">
-        Toggle Theme
+            {t('translation.toggleTheme')}
       </Button>
+      <LanguageSwitcher />
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

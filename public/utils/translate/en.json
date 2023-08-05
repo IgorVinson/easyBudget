@@ -1,0 +1,20 @@
+{
+  "translation": {
+    "title": "easyBudget",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "toggleTheme": "Toggle Theme",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "integrations": "Integrations",
+    "savedReports": "Saved Reports",
+    "currentMonth": "Current Month",
+    "lastQuarter": "Last Quarter",
+    "yearEndSale": "Year-End Sale",
+    "today": "Today",
+    "recentDeposits": "Recent Deposits",
+    "onDate": "15 March 2022",
+    "viewBalance": "View balance",
+    "categoriesScreen": "categories Screen"
+  }
+}
