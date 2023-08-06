@@ -1,19 +1,7 @@
-'use client';
+'use client'
 
 import React, { useState } from 'react';
-import {
-  Grid,
-  Paper,
-  Typography,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Accordion,
-  AccordionSummary,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper, Input } from '@mui/material';
 
 const data = [
   {
@@ -59,87 +47,76 @@ const data = [
         "categoryId": 4
       }
     ]
-  },
-  {
-    "id": "budgetId125",
-    "name": "Грудень 2023",
-    "status": "inactive",
-    "created_at": "2023-06-30T00:00:00Z",
-    "total_planned": 4444,
-    "total_spent": 2222,
-    "categories": [
-      {
-        "name": "Одяг",
-        "planned_amount": 222,
-        "actual_amount": 2342,
-        "categoryId": 5
-      },
-      {
-        "name": "Освіта",
-        "planned_amount": 4000,
-        "actual_amount": 3500,
-        "categoryId": 6
-      }
-    ]
   }
 ];
 
-const BudgetAccordion = ({ budgetData }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  const handleAccordionToggle = () => {
-    setExpanded((prevExpanded) => !prevExpanded);
-  };
+export default function Orders() {
+  const [editableData, setEditableData] = useState(data);
 
   const handleInputChange = (categoryId, field, value) => {
-    // логіка зміни даних...
+    setEditableData((prevData) =>
+      prevData.map((item) => ({
+        ...item,
+        categories: item.categories.map((category) =>
+          category.categoryId === categoryId ? { ...category, [field]: value } : category
+        ),
+      }))
+    );
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleAccordionToggle}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content">
-        <Typography>{budgetData.name}</Typography>
-      </AccordionSummary>
-      <Grid container component={Paper} style={{ padding: 16 }}>
-        <Grid item xs={12}>
-          <Typography>Категорії</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Table>
-            <TableBody>
-              {budgetData.categories.map((category) => (
-                <TableRow key={category.categoryId}>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={category.planned_amount}
-                      onChange={(e) => handleInputChange(category.categoryId, 'planned_amount', e.target.value)}
-                    />
-                    <Input
-                      type="number"
-                      value={category.actual_amount}
-                      onChange={(e) => handleInputChange(category.categoryId, 'actual_amount', e.target.value)}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Grid>
-      </Grid>
-    </Accordion>
-  );
-};
-
-export default function Orders() {
-  return (
-    <Grid container spacing={2}>
-      {data.map((item) => (
-        <Grid item xs={12} key={item.id}>
-          <BudgetAccordion budgetData={item} />
-        </Grid>
-      ))}
-    </Grid>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell>{editableData[0].name}</TableCell>
+            <TableCell>{editableData[1].name}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Категорії</TableCell>
+            <TableCell>
+              <TableCell>Запланована сума</TableCell>
+              <TableCell>Фактична сума</TableCell>
+            </TableCell>
+            <TableCell>
+              <TableCell>Запланована сума</TableCell>
+              <TableCell>Фактична сума</TableCell>
+            </TableCell>
+          </TableRow>
+          {editableData[0].categories.map((category, index) => (
+            <TableRow key={category.categoryId}>
+              <TableCell>{category.name}</TableCell>
+              <TableCell>
+                <Input
+                  type="number"
+                  value={category.planned_amount}
+                  onChange={(e) => handleInputChange(category.categoryId, 'planned_amount', e.target.value)}
+                />
+                <Input
+                  type="number"
+                  value={category.actual_amount}
+                  onChange={(e) => handleInputChange(category.categoryId, 'actual_amount', e.target.value)}
+                />
+              </TableCell>
+              <TableCell>
+                <Input
+                  type="number"
+                  value={editableData[1].categories[index].planned_amount}
+                  onChange={(e) => handleInputChange(editableData[1].categories[index].categoryId, 'planned_amount', e.target.value)}
+                />
+                <Input
+                  type="number"
+                  value={editableData[1].categories[index].actual_amount}
+                  onChange={(e) => handleInputChange(editableData[1].categories[index].categoryId, 'actual_amount', e.target.value)}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
