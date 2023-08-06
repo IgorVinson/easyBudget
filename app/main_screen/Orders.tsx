@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper } from '@mui/material';
+import { Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper  } from '@mui/material';
+
 
 const data = [
   {
@@ -83,9 +84,11 @@ export default function Orders() {
             <TableCell align="center">{data[1].categories[1].planned_amount}</TableCell>
             <TableCell align="center">{data[1].categories[1].actual_amount}</TableCell>
           </TableRow>
-          {/* Ваш код для інших рядків */}
+         
         </TableBody>
       </Table>
+      
     </TableContainer>
+    
   );
 }
