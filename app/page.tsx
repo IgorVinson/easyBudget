@@ -231,7 +231,7 @@ const secondaryListItems = (
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4, height: '100vh' }}>
+          <Container maxWidth="md" sx={{ mt: 4, mb: 4, height: '100vh' }}>
             <Grid container spacing={3}>
               {/* Recent Orders */}
               <Grid item xs={12}>
