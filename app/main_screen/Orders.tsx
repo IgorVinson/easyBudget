@@ -1,12 +1,11 @@
-'use client'
-
-import React, { useState } from 'react';
-import { Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper, Input } from '@mui/material';
+import React from 'react';
+import { Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper } from '@mui/material';
 
 const data = [
   {
     "id": "budgetId123",
     "name": "Липень 2023",
+    "name2": "3000",
     "status": "active",
     "created_at": "2023-07-31T00:00:00Z",
     "total_planned": 6000,
@@ -29,6 +28,7 @@ const data = [
   {
     "id": "budgetId124",
     "name": "Серпень 2023",
+    "name2": "4000",
     "status": "inactive",
     "created_at": "2023-06-30T00:00:00Z",
     "total_planned": 7000,
@@ -51,70 +51,39 @@ const data = [
 ];
 
 export default function Orders() {
-  const [editableData, setEditableData] = useState(data);
-
-  const handleInputChange = (categoryId, field, value) => {
-    setEditableData((prevData) =>
-      prevData.map((item) => ({
-        ...item,
-        categories: item.categories.map((category) =>
-          category.categoryId === categoryId ? { ...category, [field]: value } : category
-        ),
-      }))
-    );
-  };
-
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell />
-            <TableCell>{editableData[0].name}</TableCell>
-            <TableCell>{editableData[1].name}</TableCell>
+          <TableCell></TableCell>
+            <TableCell align="center" colSpan={2}>{data[0].name}</TableCell>
+            <TableCell align="center" colSpan={2}>{data[1].name}</TableCell>
+          </TableRow>
+          <TableRow>
+          <TableCell>Категорії</TableCell>
+            <TableCell align="center">Запланована сума</TableCell>
+            <TableCell align="center">Фактична сума</TableCell>
+            <TableCell align="center">Запланована сума</TableCell>
+            <TableCell align="center">Фактична сума</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>Категорії</TableCell>
-            <TableCell>
-              <TableCell>Запланована сума</TableCell>
-              <TableCell>Фактична сума</TableCell>
-            </TableCell>
-            <TableCell>
-              <TableCell>Запланована сума</TableCell>
-              <TableCell>Фактична сума</TableCell>
-            </TableCell>
+            <TableCell>{data[0].categories[0].name}</TableCell>
+            <TableCell align="center">{data[0].categories[0].planned_amount}</TableCell>
+            <TableCell align="center">{data[0].categories[0].actual_amount}</TableCell>
+            <TableCell align="center">{data[1].categories[0].planned_amount}</TableCell>
+            <TableCell align="center">{data[1].categories[0].actual_amount}</TableCell>
           </TableRow>
-          {editableData[0].categories.map((category, index) => (
-            <TableRow key={category.categoryId}>
-              <TableCell>{category.name}</TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  value={category.planned_amount}
-                  onChange={(e) => handleInputChange(category.categoryId, 'planned_amount', e.target.value)}
-                />
-                <Input
-                  type="number"
-                  value={category.actual_amount}
-                  onChange={(e) => handleInputChange(category.categoryId, 'actual_amount', e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  value={editableData[1].categories[index].planned_amount}
-                  onChange={(e) => handleInputChange(editableData[1].categories[index].categoryId, 'planned_amount', e.target.value)}
-                />
-                <Input
-                  type="number"
-                  value={editableData[1].categories[index].actual_amount}
-                  onChange={(e) => handleInputChange(editableData[1].categories[index].categoryId, 'actual_amount', e.target.value)}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
+          <TableRow>
+            <TableCell>{data[0].categories[1].name}</TableCell>
+            <TableCell align="center">{data[0].categories[1].planned_amount}</TableCell>
+            <TableCell align="center">{data[0].categories[1].actual_amount}</TableCell>
+            <TableCell align="center">{data[1].categories[1].planned_amount}</TableCell>
+            <TableCell align="center">{data[1].categories[1].actual_amount}</TableCell>
+          </TableRow>
+          {/* Ваш код для інших рядків */}
         </TableBody>
       </Table>
     </TableContainer>
