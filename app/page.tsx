@@ -29,7 +29,7 @@ import Button from '@mui/material/Button';
 import Orders from './main_screen/Orders';
 import { theme, darkTheme } from './utils/MUItheme';
 import LanguageSwitcher from './utils/translate/switcherTranslation'
-import styles from './page.module.css'
+import styles from './page.module.css';
 
 
 
@@ -231,7 +231,7 @@ const secondaryListItems = (
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4, height: '100vh' }}>
             <Grid container spacing={3}>
               {/* Recent Orders */}
               <Grid item xs={12}>
