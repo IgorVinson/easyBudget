@@ -13,7 +13,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -26,12 +25,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Button from '@mui/material/Button';
-import Orders from './main_screen/Orders';
+import BudgetTable from './components/BudgetTable';
 import { theme, darkTheme } from './utils/MUItheme';
 import LanguageSwitcher from './utils/translate/switcherTranslation'
-import styles from './page.module.css';
-
-
 
 function Copyright(props: any) {
   return (
@@ -123,7 +119,7 @@ export default function Dashboard() {
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="BudgetTable" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -157,7 +153,7 @@ const secondaryListItems = (
       <ListItemText primary="Year-end sale" />
     </ListItemButton>
   </React.Fragment>
-);; // Ваш масив або колекція з елементами JSX для вторинного списку
+);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : theme}>
@@ -233,11 +229,9 @@ const secondaryListItems = (
           <Toolbar />
           <Container maxWidth="md" sx={{ mt: 4, mb: 4, height: '100vh' }}>
             <Grid container spacing={3}>
-              {/* Recent Orders */}
+              {/* Recent BudgetTable */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
+                  <BudgetTable />
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
