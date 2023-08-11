@@ -51,7 +51,7 @@ const data = [
   }
 ];
 
-export default function Orders() {
+export default function BudgetTable() {
   return (
     <TableContainer component={Paper}>
       <Table size="small" aria-label="a dense table">
@@ -84,11 +84,11 @@ export default function Orders() {
             <TableCell align="center">{data[1].categories[1].planned_amount}</TableCell>
             <TableCell align="center">{data[1].categories[1].actual_amount}</TableCell>
           </TableRow>
-         
+
         </TableBody>
       </Table>
-      
+
     </TableContainer>
-    
+
   );
 }
