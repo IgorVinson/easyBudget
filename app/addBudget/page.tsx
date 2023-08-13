@@ -19,14 +19,30 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import { theme } from '../utils/MUItheme';
+import {theme} from '../utils/MUItheme';
+
+
+async function getData() {
+    const res = await fetch('/api/test')
+    const data = await res.json(); // read response data regardless of status
+    if (!res.ok) {
+        throw new Error(data.error || 'Failed to fetch data');
+    }
+    return data;
+}
+
 
 export default function AddBudget() {
+    const users = getData().then(data => {
+            console.log(data);
+        }
+    );
+
     const [fields, setFields] = useState([
-        { category: 'Rent', amount: '' },
-        { category: 'Utilities', amount: '' },
-        { category: 'Groceries', amount: '' },
-        { category: 'Car', amount: '' }
+        {category: 'Rent', amount: ''},
+        {category: 'Utilities', amount: ''},
+        {category: 'Groceries', amount: ''},
+        {category: 'Car', amount: ''}
     ]);
 
     const handleInputChange = (index, name, value) => {
@@ -36,7 +52,7 @@ export default function AddBudget() {
     };
 
     const handleAddField = () => {
-        setFields([...fields, { category: '', amount: '' }]);
+        setFields([...fields, {category: '', amount: ''}]);
     };
 
     const handleDeleteField = index => {
@@ -53,15 +69,15 @@ export default function AddBudget() {
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <PointOfSaleIcon />
+                <CssBaseline/>
+                <Box sx={{mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <PointOfSaleIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Enter budgets category
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             {fields.map((field, index) => (
                                 <React.Fragment key={index}>
@@ -90,7 +106,7 @@ export default function AddBudget() {
                                     </Grid>
                                     <Grid item xs={1}>
                                         <IconButton onClick={() => handleDeleteField(index)} color="error">
-                                            <DeleteIcon color="secondary" />
+                                            <DeleteIcon color="secondary"/>
                                         </IconButton>
                                     </Grid>
                                 </React.Fragment>
@@ -98,7 +114,7 @@ export default function AddBudget() {
                             <Grid item xs={12}>
                                 <Box display="flex" justifyContent="center" alignItems="center">
                                     <Button variant="contained" onClick={handleAddField}>
-                                        <AddIcon />
+                                        <AddIcon/>
                                     </Button>
                                 </Box>
                             </Grid>
