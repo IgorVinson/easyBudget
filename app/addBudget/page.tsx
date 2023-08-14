@@ -21,7 +21,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import {theme} from '../utils/MUItheme';
 
-
 async function getData() {
     const res = await fetch('/api/test')
     const data = await res.json(); // read response data regardless of status
@@ -30,7 +29,6 @@ async function getData() {
     }
     return data;
 }
-
 
 export default function AddBudget() {
     const users = getData().then(data => {

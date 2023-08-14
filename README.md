@@ -26,8 +26,60 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Setting Up the Database for Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Install MongoDB
+#### For Windows:
+- Download the MongoDB installer from [MongoDB Download Center](https://www.mongodb.com/try/download/community).
+- Install with default settings.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### For macOS:
+- Use Homebrew:
+    ```sh
+    brew tap mongodb/brew
+    brew install mongodb-community@5.0
+    ```
+
+### 2. Set Up MongoDB as a Replica Set
+
+#### For Both Windows & macOS:
+- Start MongoDB without the `--fork` option:
+    ```sh
+    mongod --port 27017 --dbpath YOUR_DB_PATH --replSet "rs"
+    ```
+
+- Start a new terminal and connect to the MongoDB instance:
+    ```sh
+    mongo --port 27017
+    ```
+
+- Initialize the replica set:
+    ```javascript
+    rs.initiate()
+    ```
+
+### 3. Clone the Project Repository
+```sh
+git clone YOUR_PROJECT_REPOSITORY_URL
+cd YOUR_PROJECT_DIRECTORY
+```
+
+### 4. Install Dependencies
+Run the following command to install all necessary dependencies:
+```sh
+npm install
+```
+
+### 5. Set Up Prisma
+
+- Ensure that your `schema.prisma` file points to your MongoDB instance. Update the connection string if necessary.
+
+- If there are any migrations or additional setup steps for your specific project, execute them:
+    ```sh
+    prisma migrate deploy
+    ```
+
+That's it! Your database setup for development should now be complete.
+
+
+
