@@ -30,7 +30,8 @@ export async function POST(request: Request) {
                 language: "en",
             },
         })
-        return NextResponse.json({user}, {status: 201})
+        const { hash, ...safeUserData } = user;
+        return NextResponse.json({ user: safeUserData }, { status: 201 });
     } catch (e) {
         return NextResponse.json({message: e.message}, {status: 500})
     }

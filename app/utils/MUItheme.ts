@@ -7,8 +7,10 @@ export const theme = createTheme({
             main: "rgb(237, 237, 237)",
         },
         secondary: {
-            main: "rgb(10, 10, 10)"
-        }
+            main: "rgb(10, 10, 10)",
+            contrastText: "#00b0ff"
+        },
+
     },
     components: {
         MuiLink: {
