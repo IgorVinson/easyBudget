@@ -16,32 +16,31 @@ import {
     Avatar,
     InputLabel
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import {theme} from '../utils/MUItheme';
-
-async function getData() {
-    const res = await fetch('/api/test')
-    const data = await res.json(); // read response data regardless of status
-    if (!res.ok) {
-        throw new Error(data.error || 'Failed to fetch data');
-    }
-    return data;
-}
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import dayjs from "dayjs";
+import {useRouter} from 'next/navigation';
 
 export default function AddBudget() {
-    const users = getData().then(data => {
-            console.log(data);
-        }
-    );
 
+    const router = useRouter();
+
+    const [plannedMonth, setPlannedMonth] = useState(dayjs());
     const [fields, setFields] = useState([
-        {category: 'Rent', amount: ''},
-        {category: 'Utilities', amount: ''},
-        {category: 'Groceries', amount: ''},
-        {category: 'Car', amount: ''}
+        {categoryName: 'Rent', plannedAmount: ''},
+        {categoryName: 'Utilities', plannedAmount: ''},
+        {categoryName: 'Groceries', plannedAmount: ''},
+        {categoryName: 'Car', plannedAmount: ''}
     ]);
+
+    const [budget, setBudget] = useState({
+        plannedMonth: '',
+        userId: '',
+        categories: []
+
+    })
 
     const handleInputChange = (index, name, value) => {
         const updatedFields = [...fields];
@@ -50,7 +49,7 @@ export default function AddBudget() {
     };
 
     const handleAddField = () => {
-        setFields([...fields, {category: '', amount: ''}]);
+        setFields([...fields, {categoryName: '', plannedAmount: ''}]);
     };
 
     const handleDeleteField = index => {
@@ -59,9 +58,30 @@ export default function AddBudget() {
         setFields(updatedFields);
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log(fields);
+
+        setBudget({
+            plannedMonth: plannedMonth.format('MMM YYYY'),
+            userId: '64eea06a9e0d0382ad2eb813', //test user
+            categories: fields
+        })
+
+        const res = await fetch('/api/saveBudget', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                plannedMonth: plannedMonth.format('MMM YYYY'),
+                userId: '64eea06a9e0d0382ad2eb813',
+                categories: fields
+            })
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            console.error(data.error);
+        } else router.push('/')
+
     };
 
     return (
@@ -72,7 +92,16 @@ export default function AddBudget() {
                     <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
                         <PointOfSaleIcon/>
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h5" variant="h5">
+                        Enter budgeting month
+                    </Typography>
+                    <DatePicker
+                        views={['month', 'year']}
+                        sx={{mt: 1}}
+                        value={plannedMonth}
+                        onChange={(newValue) => setPlannedMonth(newValue)}
+                    />
+                    <Typography component="h3" variant="h5" sx={{mt: 4}}>
                         Enter budgets category
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
@@ -81,8 +110,8 @@ export default function AddBudget() {
                                 <React.Fragment key={index}>
                                     <Grid item xs={8}>
                                         <TextField
-                                            name="category"
-                                            value={field.category}
+                                            name="categoryName"
+                                            value={field.categoryName ? field.categoryName : null}
                                             onChange={e => handleInputChange(index, e.target.name, e.target.value)}
                                             fullWidth
                                             placeholder="Category Name"
@@ -93,8 +122,7 @@ export default function AddBudget() {
                                             <InputLabel htmlFor={`amount-${index}`}>Amount</InputLabel>
                                             <OutlinedInput
                                                 id={`amount-${index}`}
-                                                name="amount"
-                                                value={field.amount}
+                                                name="plannedAmount"
                                                 onChange={e => handleInputChange(index, e.target.name, e.target.value)}
                                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                                 label="Amount"
@@ -112,13 +140,13 @@ export default function AddBudget() {
                             <Grid item xs={12}>
                                 <Box display="flex" justifyContent="center" alignItems="center">
                                     <Button variant="contained" onClick={handleAddField}>
-                                        <AddIcon/>
+                                        add categoty
                                     </Button>
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit" fullWidth variant="contained" color="secondary">
-                                    Add budgets categories
+                                    create budget
                                 </Button>
                             </Grid>
                         </Grid>
