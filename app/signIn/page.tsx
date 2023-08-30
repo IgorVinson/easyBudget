@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {theme, darktheme} from '../utils/MUItheme'
+import {theme} from '../utils/MUItheme'
 import {useRouter} from 'next/navigation';
 import {signIn} from "next-auth/react";
 import {useEffect, useState} from "react";
@@ -92,7 +92,7 @@ export default function SignIn() {
                     };
 
                     router.events?.on('routeChangeComplete', handleRouteChangeComplete);
-                    router.push('/addBudget');
+                    router.push('/saveBudget');
                 }
             });
 
@@ -155,7 +155,7 @@ export default function SignIn() {
                                 variant="body1"
                                 align="center"
                                 gutterBottom
-                                color="secondary.contrastText"
+                                color="secondary.contrastText2"
                             >
                                 Thank you for registering! However, you can log in right now!
                             </Typography>
