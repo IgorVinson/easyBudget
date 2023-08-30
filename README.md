@@ -79,7 +79,16 @@ npm install
     prisma migrate deploy
     ```
 
-That's it! Your database setup for development should now be complete.
+### 6. Start DB
+
+  ```sh 
+  mongod --config mongod.conf
+
+
+
+/opt/homebrew/Cellar/mongodb-community@5.0/5.0.17/bin/mongo --port 27018
+  ```
+
 
 
 

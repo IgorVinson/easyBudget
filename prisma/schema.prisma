@@ -11,43 +11,42 @@ datasource db {
 }
 
 model User {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  username String   @unique
-  hash     String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  hash      String
   createdAt DateTime @default(now()) @map("created_at")
-  avatar   String?
-  email    String   @unique
-  language String
+  avatar    String?
+  email     String   @unique
+  language  String
 
   // Relation fields
-  budgets  Budget[]
+  budgets Budget[]
 
   @@map("users")
 }
 
 model Budget {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  status    String
-  createdAt DateTime    @map("created_at")
-  changedAt DateTime    @map("changed_at")
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  plannedMonth String
+  createdAt    DateTime  @default(now()) @map("created_at")
+  changedAt    DateTime? @map("changed_at")
 
   // Relation fields
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
   categories Category[]
 
   @@map("budgets")
 }
 
 model Category {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
   plannedAmount Int    @map("planned_amount")
-  actualAmount  Int    @map("actual_amount")
-
+  actualAmount  Int?   @map("actual_amount")
   // Relation fields
-  budgetId     String
-  budget       Budget  @relation(fields: [budgetId], references: [id])
+  budgetId      String
+  budget        Budget @relation(fields: [budgetId], references: [id])
 
   @@map("categories")
 }
