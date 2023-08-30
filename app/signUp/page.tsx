@@ -31,7 +31,6 @@ function Copyright(props: any) {
 
 
 export default function SignUp() {
-    console.log('render signUp ')
 
     const router = useRouter();
 
