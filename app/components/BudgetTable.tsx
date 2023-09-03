@@ -1,7 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Table, TableBody, TableRow, TableCell, TableContainer, TableHead, Paper} from '@mui/material';
+import { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
 
 const userId = '64eea06a9e0d0382ad2eb813'
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.secondary.contrastText2,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
 
 async function fetchBudgets() {
     const res = await fetch(`/api/getBudgets?userId=${userId}`);
@@ -42,21 +54,25 @@ export default function BudgetTable() {
 
 
     return (
-        <TableContainer component={Paper} sx={{ display: 'inline-table' }}>
+        <TableContainer component={Paper} >
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
                         <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}></TableCell>
                         {budgets.map((budget, index) => (
-                            <TableCell align="center" colSpan={2} key={index} sx={{ whiteSpace: 'nowrap' }}>{budget.plannedMonth}</TableCell>
+                            <StyledTableCell align="center" colSpan={2} key={index} sx={{ whiteSpace: 'nowrap' }}>{budget.plannedMonth}</StyledTableCell>
                         ))}
                     </TableRow>
                     <TableRow>
                         <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}></TableCell>
                         {budgets.map((_, index) => (
                             <React.Fragment key={index}>
-                                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>Planned Amount</TableCell>
-                                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>Actual Amount</TableCell>
+                                <TableCell
+                                    align="center"
+                                    sx={{ whiteSpace: 'nowrap' }}>Plan</TableCell>
+                                <TableCell
+                                    align="center"
+                                    sx={{ whiteSpace: 'nowrap' }}>Fact</TableCell>
                             </React.Fragment>
                         ))}
                     </TableRow>
@@ -76,6 +92,21 @@ export default function BudgetTable() {
                             })}
                         </TableRow>
                     ))}
+                    <TableRow >
+                        <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Total</TableCell>
+
+                        {budgets.map((budget) => {
+                            const totalPlanned = budget.categories.reduce((acc, cat) => acc + (cat.plannedAmount || 0), 0);
+                            const totalActual = budget.categories.reduce((acc, cat) => acc + (cat.actualAmount || 0), 0);
+
+                            return (
+                                <React.Fragment key={budget.id}>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>{totalPlanned || ''}</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>{totalActual || ''}</TableCell>
+                                </React.Fragment>
+                            );
+                        })}
+                    </TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
