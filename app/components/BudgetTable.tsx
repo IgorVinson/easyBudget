@@ -173,7 +173,7 @@ export default function BudgetTable() {
                                             <OutlinedInput
                                                 defaultValue={category.name}
                                                 onChange={handleInputChange}
-                                                onKeyPress={(e) => {
+                                                onKeyDown={(e) => {
                                                     if (e.key === 'Enter') {
                                                         handleSaveClick(category.id, newName);
                                                     }
