@@ -77,7 +77,6 @@ export default function Dashboard() {
   }
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    console.log(isSmallScreen)
 
   return (
       <ThemeProvider theme={darkMode ? darkTheme : theme}>
