@@ -22,6 +22,7 @@ import {theme} from '../utils/MUItheme';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
 import {useRouter} from 'next/navigation';
+import {SessionProvider, useSession} from "next-auth/react";
 
 export default function AddBudget() {
 
@@ -83,6 +84,9 @@ export default function AddBudget() {
         } else router.push('/')
 
     };
+
+    const session = useSession()
+    console.log('SESSION',session)
 
     return (
         <ThemeProvider theme={theme}>

@@ -92,7 +92,7 @@ export default function SignIn() {
                     };
 
                     router.events?.on('routeChangeComplete', handleRouteChangeComplete);
-                    router.push('/saveBudget');
+                    router.push('/addBudget');
                 }
             });
 
@@ -186,10 +186,6 @@ export default function SignIn() {
                             error={!!errors.password}
                             helperText={errors.password}
                         />
-                        {/*<FormControlLabel*/}
-                        {/*    control={<Checkbox value="remember" color="primary"/>}*/}
-                        {/*    label="Remember me"*/}
-                        {/*/>*/}
                         {loading && (
                             <Box sx={{display: 'flex', justifyContent: 'center', mt: 2, mb: 2, width: '100%'}}>
                                 <CircularProgress/>
