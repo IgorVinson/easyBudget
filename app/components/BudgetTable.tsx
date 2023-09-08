@@ -9,11 +9,12 @@ import {
     Paper,
     OutlinedInput,
     Button,
-    Box
+    Box,
 } from '@mui/material';
 import {tableCellClasses} from '@mui/material/TableCell';
 import {styled} from '@mui/material/styles';
 import ModeIcon from '@mui/icons-material/Mode';
+import Modal from "@/app/components/Modal";
 
 
 const userId = '64eea06a9e0d0382ad2eb813'
@@ -52,14 +53,20 @@ async function fetchBudgets() {
 export default function BudgetTable() {
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const saveButtonRef = useRef(null)
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const [allBudgets, setAllBudgets] = useState([]);
     const [currentMonth, setCurrentMonth] = useState("");
+    const [modalTitle, setModalTitle] = useState('')
+    const [initialModalValue, setInitialModalValue] = useState(0)
+
     const [categoryEditing, setCategoryEditing] = useState(null);
-    const [newName, setNewName] = useState('');
+
+    const [openDialog, setOpenDialog] = useState(false);
+
 
     useEffect(() => {
         setLoading(true);
@@ -84,29 +91,40 @@ export default function BudgetTable() {
             });
     }, []);
 
+
+
     const filteredBudgets = allBudgets.filter(budget => budget.plannedMonth === currentMonth);
-    const sortedCategories = filteredBudgets[0]?.categories.sort((a, b) => {
-        return b.plannedAmount - a.plannedAmount;  // Для убывающей сортировки
-    });
+    const categories = filteredBudgets[0]?.categories
 
     const handleMonthChange = (e) => {
         setCurrentMonth(e.target.value);
     }
 
-    const handleEditClick = (categoryId) => {
-        setCategoryEditing(categoryId);
-        setTimeout(() => inputRef.current?.focus(), 0);
+    const handleOpenDialog = (categoryId: string, value: string, title: string) => {
+        setInitialModalValue(value)
+        setModalTitle(title)
+        setOpenDialog(true);
+        setCategoryEditing(categoryId)
     };
 
-    const handleSaveClick = async (categoryId, newName) => {
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const handleSaveDialog = async (newValue: string, typeValue: string) => {
+
+        const changedCategoryId = categoryEditing;
+
         try {
             const res = await fetch('/api/updateCategory', {
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    categoryId,
-                    newName,
-                })
+                    categoryId: changedCategoryId,
+                    typeValue,
+                    newValue,
+                }),
             });
 
             if (res.ok) {
@@ -117,18 +135,14 @@ export default function BudgetTable() {
                 console.error(data.error);
             }
 
+
         } catch (error) {
-            console.error('Failed to update category:', error);
+            console.error('Failed to update amount:', error);
         }
 
-        setCategoryEditing(null);
-        setNewName('')
+        setOpenDialog(false);
     };
 
-
-    const handleInputChange = (e) => {
-        setNewName(e.target.value);
-    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -136,6 +150,14 @@ export default function BudgetTable() {
 
     return (
         <>
+            <Modal
+                title={modalTitle}
+                openDialog={openDialog}
+                handleCloseDialog={handleCloseDialog}
+                handleSaveDialog={handleSaveDialog}
+                initialValue={initialModalValue}
+            />
+
             <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                     <TableHead>
@@ -165,48 +187,52 @@ export default function BudgetTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sortedCategories.map((category, index) => (
+                        {categories.map((category, index) => (
                             <TableRow key={index}>
                                 <TableCell sx={{whiteSpace: 'nowrap'}}>
-                                    {categoryEditing === category.id ? (
-                                        <>
-                                            <OutlinedInput
-                                                defaultValue={category.name}
-                                                onChange={handleInputChange}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') {
-                                                        handleSaveClick(category.id, newName);
-                                                    }
-                                                }}
-                                                size="small"
-                                                inputRef={inputRef}
-                                            />
-                                            <Button
-                                                color="secondary"
-                                                onClick={() => handleSaveClick(category.id, newName)}>Save</Button>
-                                        </>
-                                    ) : (
-                                        <Box>
-                                            {category.name}
-                                            <ModeIcon
-                                                sx={{
-                                                    position:"relative",
-                                                    top: "3px",
-                                                    left:"3px"
-                                                }}
-                                                fontSize='small'
-                                                onClick={() => handleEditClick(category.id)}/>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        {category.name}
+                                        <ModeIcon
+                                            fontSize='small'
+                                            onClick={() => handleOpenDialog(category.id, category.name, 'category name')}
+                                            sx={{
+                                                position: "relative",
+                                                top: "3px",
+                                                left: "3px"
+                                            }}
+                                            color="primary"/>
+                                    </Box>
                                 </TableCell>
                                 {filteredBudgets.map((budget) => {
                                     const matchingCategory = budget.categories.find(cat => cat.name === category.name);
+
                                     return (
                                         <React.Fragment key={budget.id}>
-                                            <TableCell align="center"
-                                                       sx={{whiteSpace: 'nowrap'}}>{matchingCategory ? matchingCategory.plannedAmount : '-'}</TableCell>
-                                            <TableCell align="center"
-                                                       sx={{whiteSpace: 'nowrap'}}>{matchingCategory ? matchingCategory.actualAmount : '-'}</TableCell>
+                                            <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
+                                                {matchingCategory ? matchingCategory.plannedAmount : '-'}
+                                                <ModeIcon fontSize='small'
+                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.plannedAmount, 'planned amount')}
+                                                          sx={{
+                                                              position: "relative",
+                                                              top: "3px",
+                                                              left: "3px"
+                                                          }}
+                                                          color="primary"
+                                                />
+                                            </TableCell>
+                                            <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
+                                                {matchingCategory ? matchingCategory.actualAmount : '-'}
+                                                <ModeIcon fontSize='small'
+                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.actualAmount, 'actual amount')}
+                                                          sx={{
+                                                              position: "relative",
+                                                              top: "3px",
+                                                              left: "3px"
+                                                          }}
+                                                          color="primary"
+                                                />
+
+                                            </TableCell>
                                         </React.Fragment>
                                     );
                                 })}
@@ -214,7 +240,6 @@ export default function BudgetTable() {
                         ))}
                         <TableRow>
                             <TableCell sx={{fontWeight: 'bold', whiteSpace: 'nowrap'}}>Total</TableCell>
-
                             {filteredBudgets.map((budget) => {
                                 const totalPlanned = budget.categories.reduce((acc, cat) => acc + (cat.plannedAmount || 0), 0);
                                 const totalActual = budget.categories.reduce((acc, cat) => acc + (cat.actualAmount || 0), 0);

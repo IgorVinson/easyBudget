@@ -1,11 +1,11 @@
 'use client';
-import React, {useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { styled, ThemeProvider } from '@mui/material/styles';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {styled, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import BudgetTable from './components/BudgetTable';
-import { theme, darkTheme } from './utils/MUItheme';
+import {theme, darkTheme} from './utils/MUItheme';
 import LanguageSwitcher from './utils/translate/switcherTranslation'
 import PersonIcon from '@mui/icons-material/Person';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -25,24 +25,26 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import AppBar from "./components/appBar"
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import {useRouter} from "next/navigation";
 
 function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Greate © '}
-      <Link color="inherit" href="https://github.com/RomanHard">
-        By Tiazhkorob
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Greate © '}
+            <Link color="inherit" href="https://github.com/RomanHard">
+                By Tiazhkorob
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
 }
 
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+    open?: boolean;
 
 }
 
@@ -65,37 +67,49 @@ interface AppBarProps extends MuiAppBarProps {
 // }));
 
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-  const { t } = useTranslation();
+    const router = useRouter();
 
-  const toggleTheme = () => {
-    setDarkMode((prevMode) => !prevMode);
-  }
+    const [open, setOpen] = React.useState(true);
+    const [darkMode, setDarkMode] = useState(false);
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return (
-      <ThemeProvider theme={darkMode ? darkTheme : theme}>
-          <Box sx={{ display: 'flex' }}>
-              <Container maxWidth={isSmallScreen ? "sm" : "md"} sx={{ mt: 4, mb: 4, height: '100vh' }}>
-                  <Grid container spacing={2}>
-                      <Grid xs={12} >
-                          <AppBar />
-                      </Grid>
-                      <Grid xs={12} >
-                    <Typography variant="h6" align="center">My budgets</Typography>
-                      </Grid>
-                      <Grid xs={12} >
-                          <BudgetTable />
-                      </Grid>
-                  </Grid>
-                  <Copyright sx={{ pt: 4 }} />
-              </Container>
-          </Box>
-      </ThemeProvider>
-  );
+    const toggleDrawer = () => {
+        setOpen(!open);
+    };
+    const {t} = useTranslation();
+
+    const toggleTheme = () => {
+        setDarkMode((prevMode) => !prevMode);
+    }
+
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (
+        <ThemeProvider theme={darkMode ? darkTheme : theme}>
+            <Box sx={{display: 'flex'}}>
+                <Container maxWidth={isSmallScreen ? "sm" : "md"} sx={{mt: 4, mb: 4, height: '100vh'}}>
+                    <Grid container spacing={2}>
+                        <Grid xs={12}>
+                            <AppBar/>
+                        </Grid>
+                        <Grid xs={12}>
+                            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <Typography variant="h6" align="center" sx={{flexGrow: 4}}>My budgets</Typography>
+                                <Button
+                                        onClick={() => router.push('/addBudget')}
+                                        variant="contained"
+                                        color="secondary">
+                                    Add budget
+                                </Button>
+                            </Box>
+                        </Grid>
+                        <Grid xs={12}>
+                            <BudgetTable/>
+                        </Grid>
+                    </Grid>
+                    <Copyright sx={{pt: 4}}/>
+                </Container>
+            </Box>
+        </ThemeProvider>
+    );
 }
