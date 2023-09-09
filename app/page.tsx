@@ -1,102 +1,216 @@
-'use client';
-import React, {useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { styled, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
+'use client'
+import {ThemeProvider} from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import BudgetTable from './components/BudgetTable';
-import { theme, darkTheme } from './utils/MUItheme';
-import LanguageSwitcher from './utils/translate/switcherTranslation'
-import PersonIcon from '@mui/icons-material/Person';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import LanguageIcon from '@mui/icons-material/Language';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import AppBar from "./components/appBar"
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import {theme} from './utils/MUItheme'
+import {useRouter} from 'next/navigation';
+import {signIn} from "next-auth/react";
+import {useEffect, useState} from "react";
+import {useSearchParams} from 'next/navigation'
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Greate © '}
-      <Link color="inherit" href="https://github.com/RomanHard">
-        By Tiazhkorob
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="/signIn">
+                Easy Budget
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
 }
 
-const drawerWidth: number = 240;
+export default function SignIn() {
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+    const searchParams = useSearchParams()
+    const router = useRouter();
 
-}
+    const [loading, setLoading] = useState(false);
+    const [authAllowed, setAuthAllowed] = useState(true);
+    const [errors, setErrors] = useState<{ email?: string, password?: string }>({});
+    const [showRegisteredMessage, setShowRegisteredMessage] = useState(false);
 
-2// const AppBar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== 'open',
-// })<AppBarProps>(({ theme, open }) => ({
-//   zIndex: theme.zIndex.drawer + 1,
-//   transition: theme.transitions.create(['width', 'margin'], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(open && {
-//     marginLeft: drawerWidth,
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     transition: theme.transitions.create(['width', 'margin'], {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
+    useEffect(() => {
+        if (searchParams.get('registered')) {
+            setShowRegisteredMessage(true);
+        }
+    }, []);
 
-export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-  const { t } = useTranslation();
+    const validate = (email: string, password: string) => {
+        const newErrors = {};
 
-  const toggleTheme = () => {
-    setDarkMode((prevMode) => !prevMode);
-  }
+        // Basic email validation (could be improved further)
+        if (!email || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+            newErrors.email = "Invalid email address";
+        }
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    console.log(isSmallScreen)
+        // Basic password validation (could be improved further)
+        if (!password || password.length < 6) {
+            newErrors.password = "Password should be at least 6 characters";
+        }
 
-  return (
-      <ThemeProvider theme={darkMode ? darkTheme : theme}>
-          <Box sx={{ display: 'flex' }}>
-              <Container maxWidth={isSmallScreen ? "sm" : "md"} sx={{ mt: 4, mb: 4, height: '100vh' }}>
-                  <Grid container spacing={2}>
-                      <Grid xs={12} >
-                          <AppBar />
-                      </Grid>
-                      <Grid xs={12} >
-                    <Typography variant="h6" align="center">My budgets</Typography>
-                      </Grid>
-                      <Grid xs={12} >
-                          <BudgetTable />
-                      </Grid>
-                  </Grid>
-                  <Copyright sx={{ pt: 4 }} />
-              </Container>
-          </Box>
-      </ThemeProvider>
-  );
+        setErrors(newErrors);
+
+        // Returns true if no errors were found
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const email = data.get('email') as string;
+        const password = data.get('password') as string;
+
+        if (!validate(email, password)) return;
+
+        setLoading(true)
+
+        try {
+            signIn("credentials", {
+                redirect: false,
+                email: email,
+                password: password,
+            }).then((result) => {
+                setLoading(false)
+                if (result.error) {
+                    console.error("Authentication failed:", result);
+                    setAuthAllowed(false);
+                } else {
+                    const handleRouteChangeComplete = () => {
+                        setLoading(false);
+                        router.events?.off('routeChangeComplete', handleRouteChangeComplete);
+                    };
+
+                    router.events?.on('routeChangeComplete', handleRouteChangeComplete);
+                    router.push('/home');
+                }
+            });
+
+        } catch (error) {
+            setLoading(false);
+            console.error("Error during authentication:", error);
+        }
+    };
+
+    return (
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlinedIcon/>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    {!authAllowed && (
+                        <Box
+                            sx={{
+                                backgroundColor: 'white',
+                                padding: 2,
+                                marginBottom: 1,
+                                borderRadius: 1,
+                                border: '1px solid #e0e0e0',
+                                marginTop: 2
+                            }}
+                        >
+                            <Typography
+                                variant="body2"
+                                color="error"  // This will give it a red color, indicating an error
+                                align="center"
+                            >
+                                Authentication not allowed. Please try again.
+                            </Typography>
+                        </Box>
+                    )}
+                    {showRegisteredMessage && authAllowed && (
+                        <Box
+                            sx={{
+                                backgroundColor: 'white',
+                                padding: 2,
+                                marginBottom: 1,
+                                borderRadius: 1,
+                                border: '1px solid #e0e0e0',
+                                marginTop: 2
+                            }}
+                        >
+                            <Typography
+                                variant="body1"
+                                align="center"
+                                gutterBottom
+                                color="secondary.contrastText2"
+                            >
+                                Thank you for registering! However, you can log in right now!
+                            </Typography>
+                        </Box>
+                    )}
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            error={!!errors.email}
+                            helperText={errors.email}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            error={!!errors.password}
+                            helperText={errors.password}
+                        />
+                        {loading && (
+                            <Box sx={{display: 'flex', justifyContent: 'center', mt: 2, mb: 2, width: '100%'}}>
+                                <CircularProgress/>
+                            </Box>
+                        )}
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container justifyContent={"center"}>
+                            <Grid item>
+                                <Link href="/signUp" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+
+                    </Box>
+                </Box>
+                <Copyright sx={{mt: 2, mb: 4}}/>
+            </Container>
+        </ThemeProvider>
+    );
 }
