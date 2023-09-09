@@ -1,4 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+'use client'
+import React, {useEffect, useState} from 'react';
 import {
     Table,
     TableBody,
@@ -7,15 +8,13 @@ import {
     TableContainer,
     TableHead,
     Paper,
-    OutlinedInput,
-    Button,
+
     Box,
 } from '@mui/material';
 import {tableCellClasses} from '@mui/material/TableCell';
 import {styled} from '@mui/material/styles';
 import ModeIcon from '@mui/icons-material/Mode';
 import Modal from "@/app/components/Modal";
-
 
 const userId = '64eea06a9e0d0382ad2eb813'
 
@@ -52,8 +51,6 @@ async function fetchBudgets() {
 
 export default function BudgetTable() {
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    const saveButtonRef = useRef(null)
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -90,7 +87,6 @@ export default function BudgetTable() {
                 setLoading(false);
             });
     }, []);
-
 
 
     const filteredBudgets = allBudgets.filter(budget => budget.plannedMonth === currentMonth);

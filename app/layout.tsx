@@ -13,12 +13,11 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {SessionProvider} from "next-auth/react";
 
 
-
-export default async function RootLayout({children}: {
+export default async function RootLayout({children, session}: {
     children: React.ReactNode,
     session: any,
 
-}) : React.ReactNode {
+}): React.ReactNode {
     // Ініціалізуємо i18next один раз на всій сторінці
     useEffect(() => {
         i18n.init({
@@ -34,15 +33,6 @@ export default async function RootLayout({children}: {
         });
     }, []);
     //
-
-    async function fetchSession() {
-        const res = await fetch('/api/session');  // Замените на ваш реальный путь к API
-        const data = await res.json();
-
-        return data;
-    }
-
-    const session =  fetchSession()
 
     return (
         <html lang="en">
