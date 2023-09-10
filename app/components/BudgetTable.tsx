@@ -15,8 +15,8 @@ import {tableCellClasses} from '@mui/material/TableCell';
 import {styled} from '@mui/material/styles';
 import ModeIcon from '@mui/icons-material/Mode';
 import Modal from "@/app/components/Modal";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const userId = '64eea06a9e0d0382ad2eb813'
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -36,71 +36,49 @@ const StyledSelect = styled('select')(({theme}) => ({
     // добавьте другие стили, которые вы хотите применить к select
 }));
 
+interface Props {
+    setCurrentBudgetID: (id: string) => void;
+    allBudgets: any;
+    currentMonth: string;
+    setCurrentMonth: (month: string) => void;
+    fetchBudgets: () => void;
 
-async function fetchBudgets() {
-    const res = await fetch(`/api/getBudgets?userId=${userId}`);
-    const data = await res.json();
-
-    if (res.status !== 200) {
-        throw new Error(data.error);
-    }
-
-    return data;
 }
 
+export default function BudgetTable({
+                                        setCurrentBudgetID,
+                                        allBudgets,
+                                        currentMonth,
+                                        setCurrentMonth,
+                                        fetchBudgets
+                                    }: Props) {
 
-export default function BudgetTable() {
-
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const [allBudgets, setAllBudgets] = useState([]);
-    const [currentMonth, setCurrentMonth] = useState("");
     const [modalTitle, setModalTitle] = useState('')
     const [initialModalValue, setInitialModalValue] = useState(0)
-
     const [categoryEditing, setCategoryEditing] = useState(null);
-
     const [openDialog, setOpenDialog] = useState(false);
+    const [mode, setMode] = useState("edit");
 
-
-    useEffect(() => {
-        setLoading(true);
-        fetchBudgets()
-            .then(res => {
-                setAllBudgets(res);
-                setLoading(false);
-
-                // Получаем текущий месяц и год
-                const now = new Date();
-                const currentMonthString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-
-                // Ищем бюджет для текущего месяца
-                const currentBudget = res.find(budget => budget.plannedMonth === currentMonthString);
-
-                // Устанавливаем текущий месяц, если он есть в данных. Если нет - первый из списка
-                setCurrentMonth(currentBudget ? currentBudget.plannedMonth : res[0]?.plannedMonth);
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
-
-
-    const filteredBudgets = allBudgets.filter(budget => budget.plannedMonth === currentMonth);
-    const categories = filteredBudgets[0]?.categories
+    const filteredBudgets = allBudgets ? allBudgets?.filter(budget => budget.plannedMonth === currentMonth) : [];
+    const categories = filteredBudgets ? filteredBudgets[0]?.categories : [];
 
     const handleMonthChange = (e) => {
         setCurrentMonth(e.target.value);
+        const currentBudget = allBudgets.find(budget => budget.plannedMonth === e.target.value);
+        setCurrentBudgetID(currentBudget.id);
     }
 
-    const handleOpenDialog = (categoryId: string, value: string, title: string) => {
-        setInitialModalValue(value)
-        setModalTitle(title)
+    const handleOpenDialog = (categoryId: string, value: string, title: string, mode: string) => {
+        setModalTitle(title);
         setOpenDialog(true);
-        setCategoryEditing(categoryId)
+        setCategoryEditing(categoryId);
+        setMode(mode);
+
+        if (mode === 'edit') {
+            setInitialModalValue(value);
+        } else if (mode === 'delete') {
+            setInitialModalValue(null);
+        }
     };
 
 
@@ -124,8 +102,7 @@ export default function BudgetTable() {
             });
 
             if (res.ok) {
-                const updatedBudgets = await fetchBudgets();
-                setAllBudgets(updatedBudgets);
+                fetchBudgets()
             } else {
                 const data = await res.json();
                 console.error(data.error);
@@ -139,19 +116,37 @@ export default function BudgetTable() {
         setOpenDialog(false);
     };
 
+    const handleDeleteCategory = async () => {
+        try {
+            const res = await fetch('/api/updateCategory', {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({categoryId: categoryEditing})
+            });
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+            if (res.ok) {
+                fetchBudgets()
+            } else {
+                const data = await res.json();
+                console.error(data.error);
+            }
+        } catch (error) {
+            console.error('Failed to delete category:', error);
+        }
+        handleCloseDialog()
+    };
 
 
     return (
         <>
             <Modal
                 title={modalTitle}
+                mode={mode}  // добавьте режим, если необходимо
                 openDialog={openDialog}
                 handleCloseDialog={handleCloseDialog}
                 handleSaveDialog={handleSaveDialog}
                 initialValue={initialModalValue}
+                handleDelete={handleDeleteCategory}
             />
 
             <TableContainer component={Paper}>
@@ -159,18 +154,22 @@ export default function BudgetTable() {
                     <TableHead>
                         <TableRow>
                             <TableCell align="center" sx={{whiteSpace: 'nowrap'}}></TableCell>
-                            {filteredBudgets.map((budget, index) => (
+                            {filteredBudgets?.map((budget, index) => (
                                 <StyledTableCell align="center" colSpan={2} key={index} sx={{whiteSpace: 'nowrap'}}>
                                     <StyledSelect onChange={handleMonthChange} value={currentMonth}>
-                                        {allBudgets.map((budget, index) => <option key={index}
-                                                                                   value={budget.plannedMonth}>{budget.plannedMonth}</option>)}
+                                        {allBudgets.map((budget, index) =>
+                                            <option key={index}
+                                                    value={budget.plannedMonth}
+                                            >
+                                                {budget.plannedMonth}
+                                            </option>)}
                                     </StyledSelect>
                                 </StyledTableCell>
                             ))}
                         </TableRow>
                         <TableRow>
                             <TableCell align="center" sx={{whiteSpace: 'nowrap'}}></TableCell>
-                            {filteredBudgets.map((_, index) => (
+                            {filteredBudgets?.map((_, index) => (
                                 <React.Fragment key={index}>
                                     <TableCell
                                         align="center"
@@ -183,20 +182,30 @@ export default function BudgetTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {categories.map((category, index) => (
+                        {categories?.map((category, index) => (
                             <TableRow key={index}>
                                 <TableCell sx={{whiteSpace: 'nowrap'}}>
                                     <Box>
                                         {category.name}
                                         <ModeIcon
                                             fontSize='small'
-                                            onClick={() => handleOpenDialog(category.id, category.name, 'category name')}
+                                            onClick={() => handleOpenDialog(category.id, category.name, 'category name', 'edit')}
                                             sx={{
                                                 position: "relative",
                                                 top: "3px",
                                                 left: "3px"
                                             }}
                                             color="primary"/>
+                                        <DeleteIcon
+                                            fontSize='small'
+                                            onClick={() => handleOpenDialog(category.id)}
+                                            sx={{
+                                                position: "relative",
+                                                top: "3px",
+                                                left: "3px",
+                                                color: "rgba(255, 0, 0, 0.5)"
+                                            }}
+                                        />
                                     </Box>
                                 </TableCell>
                                 {filteredBudgets.map((budget) => {
@@ -207,7 +216,7 @@ export default function BudgetTable() {
                                             <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
                                                 {matchingCategory ? matchingCategory.plannedAmount : '-'}
                                                 <ModeIcon fontSize='small'
-                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.plannedAmount, 'planned amount')}
+                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.plannedAmount, 'planned amount', 'edit')}
                                                           sx={{
                                                               position: "relative",
                                                               top: "3px",
@@ -219,7 +228,7 @@ export default function BudgetTable() {
                                             <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
                                                 {matchingCategory ? matchingCategory.actualAmount : '-'}
                                                 <ModeIcon fontSize='small'
-                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.actualAmount, 'actual amount')}
+                                                          onClick={() => handleOpenDialog(matchingCategory.id, matchingCategory.actualAmount, 'actual amount', 'edit')}
                                                           sx={{
                                                               position: "relative",
                                                               top: "3px",
@@ -234,6 +243,8 @@ export default function BudgetTable() {
                                 })}
                             </TableRow>
                         ))}
+                        <TableRow>
+                        </TableRow>
                         <TableRow>
                             <TableCell sx={{fontWeight: 'bold', whiteSpace: 'nowrap'}}>Total</TableCell>
                             {filteredBudgets.map((budget) => {
@@ -254,6 +265,7 @@ export default function BudgetTable() {
                                 );
                             })}
                         </TableRow>
+
                     </TableBody>
                 </Table>
             </TableContainer>

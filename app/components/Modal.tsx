@@ -13,17 +13,20 @@ interface Props {
     openDialog: boolean,
     handleCloseDialog: () => void,
     handleSaveDialog: (newValue: string, typeValue: string) => void,
-    initialValue?: string
+    handleDelete?: () => void,
+    initialValue?: number,
+    mode: "edit" | "delete"
 }
 
-export default function Modal({title, openDialog, handleCloseDialog, handleSaveDialog, initialValue}: Props) {
-    const [inputValue, setInputValue] = React.useState<string>(initialValue || '');
+
+export default function Modal({title, openDialog, handleCloseDialog, handleSaveDialog, initialValue, mode, handleDelete}: Props) {
+    const [inputValue, setInputValue] = React.useState<number>(initialValue || 0);
 
     React.useEffect(() => {
-        setInputValue(initialValue || '');
+        setInputValue(initialValue || 0);
     }, [initialValue]);
 
-    let typeValue : string;
+    let typeValue: string;
     if (title === 'planned amount') {
         typeValue = 'plannedAmount';
     }
@@ -38,26 +41,47 @@ export default function Modal({title, openDialog, handleCloseDialog, handleSaveD
 
     return (
         <ThemeProvider theme={theme}>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-            <DialogTitle>{`Update ${title}`}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Please enter the new amount :
-                </DialogContentText>
-                <OutlinedInput
-                    defaultValue={initialValue}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleCloseDialog} variant="contained">Cancel</Button>
-                <Button onClick={() => handleSaveDialog(inputValue, typeValue)} color="secondary"
-                        variant="contained" autoFocus disabled={!inputValue}>Save</Button>
-            </DialogActions>
-        </Dialog>
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>{mode === "edit" ? `Update ${title}` : "Confirm deletion"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {mode === "edit" ? "Please enter the new amount :" : "Are you sure you want to delete this category?"}
+                    </DialogContentText>
+                    {mode === "edit" && (
+                        <OutlinedInput
+                            defaultValue={initialValue}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} variant="contained">Cancel</Button>
+                    {mode === "edit" ? (
+                        <Button
+                            onClick={() => handleSaveDialog(inputValue, typeValue)}
+                            color="secondary"
+                            variant="contained"
+                            autoFocus
+                            disabled={!inputValue}
+                        >
+                            Save
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={handleDelete}
+                            color="secondary"
+                            variant="contained"
+                            autoFocus
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </DialogActions>
+            </Dialog>
         </ThemeProvider>
-    )
+    );
+
 }
 
 
