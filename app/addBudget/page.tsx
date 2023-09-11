@@ -84,7 +84,7 @@ export default function AddBudget() {
         if (!res.ok) {
             const data = await res.json();
             console.error(data.error);
-        } else router.push('/')
+        } else router.push('/home')
 
     };
 

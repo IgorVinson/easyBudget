@@ -8,24 +8,18 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAuth(event.target.checked);
-    };
-
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar variant="string"
+                         sx={{
+                             backgroundColor:'#fff',
+                             color: '#333',
+                             borderRadius: '5px'
+                         }}
+                >
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Ebudget
                     </Typography>
@@ -36,7 +30,6 @@ export default function MenuAppBar() {
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                onClick={handleMenu}
                                 color="inherit"
                             >
                                 <AccountCircle />

@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
     Table,
     TableBody,
@@ -16,6 +16,8 @@ import {styled} from '@mui/material/styles';
 import ModeIcon from '@mui/icons-material/Mode';
 import Modal from "@/app/components/Modal";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {log} from "util";
+import Typography from "@mui/material/Typography";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -38,7 +40,7 @@ const StyledSelect = styled('select')(({theme}) => ({
 
 interface Props {
     setCurrentBudgetID: (id: string) => void;
-    allBudgets: any;
+    allBudgets: Array<object>;
     currentMonth: string;
     setCurrentMonth: (month: string) => void;
     fetchBudgets: () => void;
@@ -59,8 +61,17 @@ export default function BudgetTable({
     const [openDialog, setOpenDialog] = useState(false);
     const [mode, setMode] = useState("edit");
 
-    const filteredBudgets = allBudgets ? allBudgets?.filter(budget => budget.plannedMonth === currentMonth) : [];
-    const categories = filteredBudgets ? filteredBudgets[0]?.categories : [];
+    let filteredBudgets = allBudgets
+        ? allBudgets.filter(budget => budget.plannedMonth === currentMonth)
+        : [];
+
+    const categories = filteredBudgets.length > 0
+        ? filteredBudgets[0].categories
+        : allBudgets[0]?.categories;
+
+    allBudgets.forEach(budget => {
+        console.log('Available plannedMonth:', budget.plannedMonth);
+    });
 
     const handleMonthChange = (e) => {
         setCurrentMonth(e.target.value);
@@ -80,7 +91,6 @@ export default function BudgetTable({
             setInitialModalValue(null);
         }
     };
-
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
@@ -153,7 +163,9 @@ export default function BudgetTable({
                 <Table size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center" sx={{whiteSpace: 'nowrap'}}></TableCell>
+                            <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
+                                <Typography variant="p">My budget</Typography>
+                            </TableCell>
                             {filteredBudgets?.map((budget, index) => (
                                 <StyledTableCell align="center" colSpan={2} key={index} sx={{whiteSpace: 'nowrap'}}>
                                     <StyledSelect onChange={handleMonthChange} value={currentMonth}>

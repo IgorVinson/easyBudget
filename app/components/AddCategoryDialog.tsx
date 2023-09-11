@@ -23,7 +23,7 @@ export default function AddCategoryDialog({open, handleClose, handleAddCategory}
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Add New Category</DialogTitle>
+            <DialogTitle>Add new category</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     Please enter details for the new category.
@@ -31,7 +31,7 @@ export default function AddCategoryDialog({open, handleClose, handleAddCategory}
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="Category Name"
+                    label="Category name"
                     type="text"
                     fullWidth
                     value={name}
@@ -39,7 +39,7 @@ export default function AddCategoryDialog({open, handleClose, handleAddCategory}
                 />
                 <TextField
                     margin="dense"
-                    label="Planned Amount"
+                    label="Planned amount"
                     type="number"
                     fullWidth
                     value={plannedAmount}
@@ -47,10 +47,14 @@ export default function AddCategoryDialog({open, handleClose, handleAddCategory}
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose}
+                        color="secondary"
+                        size="small">
                     Cancel
                 </Button>
-                <Button onClick={() => handleAddCategory(name, plannedAmount)} color="primary">
+                <Button onClick={() => handleAddCategory(name, plannedAmount)}
+                        color="success"
+                        size="small">
                     Add
                 </Button>
             </DialogActions>
