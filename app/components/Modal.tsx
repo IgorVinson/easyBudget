@@ -56,13 +56,16 @@ export default function Modal({title, openDialog, handleCloseDialog, handleSaveD
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} variant="contained">Cancel</Button>
+                    <Button onClick={handleCloseDialog}
+                            color="secondary"
+                            size="small">
+                        Cancel
+                    </Button>
                     {mode === "edit" ? (
                         <Button
                             onClick={() => handleSaveDialog(inputValue, typeValue)}
-                            color="secondary"
-                            variant="contained"
-                            autoFocus
+                            color="success"
+                            size="small"
                             disabled={!inputValue}
                         >
                             Save
@@ -70,9 +73,8 @@ export default function Modal({title, openDialog, handleCloseDialog, handleSaveD
                     ) : (
                         <Button
                             onClick={handleDelete}
-                            color="secondary"
-                            variant="contained"
-                            autoFocus
+                            size="small"
+                            color="error"
                         >
                             Delete
                         </Button>

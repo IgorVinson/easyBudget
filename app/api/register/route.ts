@@ -5,21 +5,21 @@ const bcrypt = require('bcrypt')
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
-    try {
-        const {username, email, password} = await request.json()
+    const {username, email, password} = await request.json();
 
+    try {
         const existingUser = await prisma.user.findUnique({
             where: {email},
-        })
+        });
 
         if (existingUser) {
-            NextResponse.json(
+            return NextResponse.json(
                 {message: "Email already in use"},
-                {status: 400,})
-            return
+                {status: 400}
+            );
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await prisma.user.create({
             data: {
@@ -29,11 +29,13 @@ export async function POST(request: Request) {
                 createdAt: new Date(),
                 language: "en",
             },
-        })
+        });
+
         const { hash, ...safeUserData } = user;
         return NextResponse.json({ user: safeUserData }, { status: 201 });
     } catch (e) {
-        return NextResponse.json({message: e.message}, {status: 500})
+        return NextResponse.json({message: e.message}, {status: 500});
     }
 }
+
 
