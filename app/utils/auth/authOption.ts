@@ -6,7 +6,7 @@ import {PrismaClient} from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
 
     providers: [
         CredentialsProvider({
@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
                 password: {label: "password", type: "password"}
             },
             authorize: async (credentials) => {
-                const user = await prisma.user.findUnique({where: {email: credentials.email}})
+                const user = await prisma.user.findUnique({where: {email: credentials?.email}})
                 console.log("Found user:", user);
                 if (user && await bcrypt.compare(credentials.password, user.hash)) {
                     return {id: user.id, username: user.username, email: user.email}
