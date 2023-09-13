@@ -13,25 +13,25 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {SessionProvider} from "next-auth/react";
 
 
-export default async function RootLayout({children, session}: {
+export default function RootLayout({children, session}: {
     children: React.ReactNode,
     session: any,
 
 }): React.ReactNode {
     // Ініціалізуємо i18next один раз на всій сторінці
-    useEffect(() => {
-        i18n.init({
-            lng: 'en',
-            fallbackLng: 'en',
-            debug: true,
-            backend: {
-                loadPath: '/utils/translate/{{lng}}.json', // Адреса до перекладів
-            },
-            interpolation: {
-                escapeValue: false,
-            },
-        });
-    }, []);
+    // useEffect(() => {
+    //     i18n.init({
+    //         lng: 'en',
+    //         fallbackLng: 'en',
+    //         debug: true,
+    //         backend: {
+    //             loadPath: '/utils/translate/{{lng}}.json', // Адреса до перекладів
+    //         },
+    //         interpolation: {
+    //             escapeValue: false,
+    //         },
+    //     });
+    // }, []);
     //
 
     return (
