@@ -107,7 +107,8 @@ export default function SignUp() {
             };
 
             router.events?.on('routeChangeComplete', handleRouteChangeComplete);
-            router.push('/home?registered=true');
+            router.push('/?registered=true');
+
         } catch (error) {
             console.error("Error during registration:", error);
             setLoading(false); // stop loading in case of an exception or error

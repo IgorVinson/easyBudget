@@ -43,3 +43,17 @@ export async function PATCH(req: Request) {
         return NextResponse.json({error: error.message}, {status: 500});
     }
 }
+
+export async function DELETE(req: Request) {
+    const { categoryId } = await req.json();
+
+    try {
+        const deletedCategory = await prisma.category.delete({
+            where: { id: categoryId }
+        });
+
+        return NextResponse.json({ deletedCategory });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
