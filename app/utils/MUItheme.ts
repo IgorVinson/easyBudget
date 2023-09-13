@@ -42,4 +42,5 @@ export const darkTheme = createTheme({
     },
 });
 
-export default { theme, darkTheme };
+const themes = { theme, darkTheme };
+export default themes;
