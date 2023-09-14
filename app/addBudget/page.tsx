@@ -63,7 +63,7 @@ export default function AddBudget() {
         setFields(updatedFields);
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setBudget({
