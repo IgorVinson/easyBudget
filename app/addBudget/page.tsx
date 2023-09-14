@@ -28,7 +28,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function AddBudget() {
 
     const router = useRouter();
-    const { status } = useSession();
+    const {status} = useSession();
 
     const [isLoading] = useState(false);
     const [plannedMonth, setPlannedMonth] = useState(dayjs());
@@ -46,7 +46,8 @@ export default function AddBudget() {
 
     })
 
-    const handleInputChange = (index, name, value) => {
+
+    const handleInputChange = (index: number, name: string, value: string) => {
         const updatedFields = [...fields];
         updatedFields[index][name] = value;
         setFields(updatedFields);
@@ -95,7 +96,7 @@ export default function AddBudget() {
         if (status === "unauthenticated") {
             router.push('/');
         }
-    }, [status]);
+    }, [status, router]);
 
     if (status === "loading" || undefined) return <div>Loading...</div>;
 
