@@ -48,6 +48,7 @@ export const authOptions = {
             const user = token.token.user
             return {session, user}
         },
-    }
+    },
+    secret: process.env.SECRET
 
 }
