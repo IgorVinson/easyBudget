@@ -49,7 +49,7 @@ export default function AddBudget() {
 
     const handleInputChange = (index: number, name: string, value: string) => {
         const updatedFields = [...fields];
-        updatedFields[index][name] = value;
+        (updatedFields[index] as any)[name] = value;
         setFields(updatedFields);
     };
 
