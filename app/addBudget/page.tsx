@@ -57,7 +57,7 @@ export default function AddBudget() {
         setFields([...fields, {categoryName: '', plannedAmount: 0}]);
     };
 
-    const handleDeleteField = index => {
+    const handleDeleteField = (index: number) => {
         const updatedFields = [...fields];
         updatedFields.splice(index, 1);
         setFields(updatedFields);
