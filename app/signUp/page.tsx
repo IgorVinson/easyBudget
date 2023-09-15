@@ -100,7 +100,7 @@ export default function SignUp() {
         try {
             await sendData(sendingData);
 
-            // Listen for the end of the route change and then stop the spinner
+            // Listen for the end of the route.ts change and then stop the spinner
             const handleRouteChangeComplete = () => {
                 setLoading(false);
                 router.events?.off('routeChangeComplete', handleRouteChangeComplete);
