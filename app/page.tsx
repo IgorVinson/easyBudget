@@ -103,114 +103,145 @@ export default function SignIn() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
+      <ThemeProvider theme={theme}>
+        <Container component='main' maxWidth='xs'>
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Box sx={{alignSelf:"center"}}>
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component='h1' variant='h5'>
+                Sign in
+              </Typography>
+            </Box>
+            {!authAllowed && (
+              <Box
+                sx={{
+                  backgroundColor: 'white',
+                  padding: 2,
+                  marginBottom: 1,
+                  borderRadius: 1,
+                  border: '1px solid #e0e0e0',
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant='body2'
+                  color='error' // This will give it a red color, indicating an error
+                  align='center'
                 >
-                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    {!authAllowed && (
-                        <Box
-                            sx={{
-                                backgroundColor: 'white',
-                                padding: 2,
-                                marginBottom: 1,
-                                borderRadius: 1,
-                                border: '1px solid #e0e0e0',
-                                marginTop: 2
-                            }}
-                        >
-                            <Typography
-                                variant="body2"
-                                color="error"  // This will give it a red color, indicating an error
-                                align="center"
-                            >
-                                Authentication not allowed. Please try again.
-                            </Typography>
-                        </Box>
-                    )}
-                    {showRegisteredMessage && authAllowed && (
-                        <Box
-                            sx={{
-                                backgroundColor: 'white',
-                                padding: 2,
-                                marginBottom: 1,
-                                borderRadius: 1,
-                                border: '1px solid #e0e0e0',
-                                marginTop: 2
-                            }}
-                        >
-                            <Typography
-                                variant="body1"
-                                align="center"
-                                gutterBottom
-                                color="secondary.contrastText2"
-                            >
-                                Thank you for registering! However, you can log in right now!
-                            </Typography>
-                        </Box>
-                    )}
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            error={!!errors.email}
-                            helperText={errors.email}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            error={!!errors.password}
-                            helperText={errors.password}
-                        />
-                        {loading && (
-                            <Box sx={{display: 'flex', justifyContent: 'center', mt: 2, mb: 2, width: '100%'}}>
-                                <CircularProgress/>
-                            </Box>
-                        )}
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container justifyContent={"center"}>
-                            <Grid item>
-                                <Link href="/signUp" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
+                  Authentication not allowed. Please try again.
+                </Typography>
+              </Box>
+            )}
+            {showRegisteredMessage && authAllowed && (
+              <Box
+                sx={{
+                  backgroundColor: 'white',
+                  padding: 2,
+                  marginBottom: 1,
+                  borderRadius: 1,
+                  border: '1px solid #e0e0e0',
+                  marginTop: 2,
+                }}
+              >
+                <Typography
+                  variant='body1'
+                  align='center'
+                  gutterBottom
+                  color='secondary.contrastText2'
+                >
+                  Thank you for registering! However, you can log in right now!
+                </Typography>
+              </Box>
+            )}
+            <Box
+              component='form'
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+                autoFocus
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <Typography
+                variant='body1'
+                gutterBottom
+                color='secondary.contrastText2'
+                display={'block'}
+              >
+                Testing login : test@test.com
+              </Typography>
 
-                    </Box>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+              <Typography
+                variant='body1'
+                gutterBottom
+                color='secondary.contrastText2'
+                display={'block'}
+              >
+                Testing password : 111111
+              </Typography>
+
+              {loading && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 2,
+                    mb: 2,
+                    width: '100%',
+                  }}
+                >
+                  <CircularProgress />
                 </Box>
-                <Copyright sx={{mt: 2, mb: 4}}/>
-            </Container>
-        </ThemeProvider>
+              )}
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container justifyContent={'center'}>
+                <Grid item>
+                  <Link href='/signUp' variant='body2'>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+          <Copyright sx={{ mt: 2, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
     );
 }

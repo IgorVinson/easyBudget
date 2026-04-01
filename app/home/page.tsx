@@ -111,7 +111,7 @@ export default function Dashboard() {
         const newCategory = {
             name: categoryName,
             plannedAmount: categoryAmount,
-            budgetId: currenBudgetID // замените это на реальный budgetId
+            budgetId: currenBudgetID 
         };
 
         try {
@@ -192,13 +192,13 @@ export default function Dashboard() {
                                 >
                                     Add budget
                                 </Button>
-                                <Button
+                                {/* <Button
                                     onClick={handleDeleteBudget}
                                     size="small"
                                     color="error"
                                 >
                                     Delete budget
-                                </Button>
+                                </Button> */}
                             </Box>
                         </Grid>
 

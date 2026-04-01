@@ -164,7 +164,7 @@ export default function BudgetTable({
                     <TableHead>
                         <TableRow>
                             <TableCell align="center" sx={{whiteSpace: 'nowrap'}}>
-                                <Typography variant="p">My budget</Typography>
+                                <Typography variant="p">My categories:</Typography>
                             </TableCell>
                             {filteredBudgets?.map((budget, index) => (
                                 <StyledTableCell align="center" colSpan={2} key={index} sx={{whiteSpace: 'nowrap'}}>
